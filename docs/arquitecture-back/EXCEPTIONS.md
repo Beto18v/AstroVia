@@ -1,10 +1,13 @@
 # EXCEPTIONS.md - Manejo Global de Excepciones
 
 ## Objetivo
+
 Unificar el formato de las respuestas de error de la API y centralizar la captura de excepciones, mejorando trazabilidad, mantenibilidad y experiencia de cliente.
 
 ## Formato Estándar de Error
+
 Todas las respuestas de error siguen el record `ApiResponse`:
+
 ```json
 {
   "success": false,
@@ -14,6 +17,7 @@ Todas las respuestas de error siguen el record `ApiResponse`:
   "timestamp": "2025-09-12T12:34:56.789"
 }
 ```
+
 - `success`: siempre `false` en errores
 - `message`: explicación legible para el cliente
 - `data`: opcional (p.e. detalles de validación)
@@ -21,19 +25,22 @@ Todas las respuestas de error siguen el record `ApiResponse`:
 - `timestamp`: fecha/hora del servidor
 
 ## Excepciones Personalizadas
-| Excepción | HTTP | Uso | Ejemplos de Mensajes |
-|----------|------|-----|-----------------------|
-| `ResourceNotFoundException` | 404 | Recurso inexistente | `Usuario no encontrado`, `Envío no encontrado` |
-| `BadRequestException` | 400 | Parámetros/entrada inválida | `Peso inválido`, `Formato incorrecto` |
-| `UnauthorizedException` | 401 | Falta de autenticación | `Token inválido`, `Credenciales incorrectas` |
-| `BusinessException` | 422 | Regla de negocio violada | `Estado no permitido`, `Username ya existe` |
+
+| Excepción                   | HTTP | Uso                         | Ejemplos de Mensajes                           |
+| --------------------------- | ---- | --------------------------- | ---------------------------------------------- |
+| `ResourceNotFoundException` | 404  | Recurso inexistente         | `Usuario no encontrado`, `Envío no encontrado` |
+| `BadRequestException`       | 400  | Parámetros/entrada inválida | `Peso inválido`, `Formato incorrecto`          |
+| `UnauthorizedException`     | 401  | Falta de autenticación      | `Token inválido`, `Credenciales incorrectas`   |
+| `BusinessException`         | 422  | Regla de negocio violada    | `Estado no permitido`, `Username ya existe`    |
 
 `NotFoundException` fue reemplazada y marcada como `@Deprecated` (compatibilidad temporal) → usar `ResourceNotFoundException`.
 
 ## Clase Central: `GlobalExceptionHandler`
+
 Ubicación: `com.astrovia.exception.GlobalExceptionHandler`
 
 Responsabilidades:
+
 - Capturar excepciones personalizadas
 - Capturar excepciones comunes de Spring (`MethodArgumentNotValidException`, `MethodArgumentTypeMismatchException`)
 - Capturar excepciones genéricas (`Exception`)
@@ -44,7 +51,9 @@ Responsabilidades:
   - resto → `info`
 
 ## Validaciones (@Valid)
+
 Para errores de validación se retorna:
+
 ```json
 {
   "success": false,
@@ -59,7 +68,9 @@ Para errores de validación se retorna:
 ```
 
 ## Ejemplos
+
 ### 1. Recurso no encontrado
+
 ```json
 {
   "success": false,
@@ -69,7 +80,9 @@ Para errores de validación se retorna:
   "timestamp": "2025-09-12T12:34:56.789"
 }
 ```
+
 ### 2. Regla de negocio (422)
+
 ```json
 {
   "success": false,
@@ -79,7 +92,9 @@ Para errores de validación se retorna:
   "timestamp": "2025-09-12T12:34:56.789"
 }
 ```
+
 ### 3. Error de validación
+
 ```json
 {
   "success": false,
@@ -94,6 +109,7 @@ Para errores de validación se retorna:
 ```
 
 ## Cómo Lanzar Excepciones
+
 ```java
 if (envio == null) throw new ResourceNotFoundException("Envío no encontrado");
 if (peso <= 0) throw new BadRequestException("Peso inválido");
@@ -101,12 +117,14 @@ if (!usuario.activo()) throw new BusinessException("Usuario inactivo");
 ```
 
 ## Beneficios
+
 - Consistencia de API
 - Reducción de duplicación en controladores
 - Mejor observabilidad vía logs clasificados
 - Facilidad de pruebas automatizadas
 
 ## Próximas Mejoras (Opcional)
+
 - Correlación de request-id en respuestas
 - Mapeo de códigos de negocio internos
 - Internacionalización de mensajes
