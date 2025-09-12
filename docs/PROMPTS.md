@@ -385,7 +385,7 @@ REQUERIMIENTOS:
 - Usar `@Bean` donde aplique
 - Documentar métodos principales
 
-Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Config
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los CONFIGs.MD
 ```
 
 ### 8. PROMPT - EXCEPCIONES
@@ -418,7 +418,7 @@ REQUERIMIENTOS:
 - Uso de `@ExceptionHandler`
 - Documentar cada excepción
 
-Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Exceptions
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los EXCEPTIONS.md
 ```
 
 ### 9. PROMPT - TESTING

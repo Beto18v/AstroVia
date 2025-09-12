@@ -1,6 +1,6 @@
 package com.astrovia.impl;
 
-import com.astrovia.config.JwtUtil;
+import com.astrovia.config.JwtTokenProvider;
 import com.astrovia.dto.AuthDTO;
 import com.astrovia.dto.UsuarioDTO;
 import com.astrovia.entity.Usuario;
@@ -28,12 +28,12 @@ public class AuthServiceImpl implements AuthService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     // En un escenario real se tendría un store (Redis/DB) para refresh tokens.
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", usuario.getRol().name());
-        String token = jwtUtil.generateToken(usuario.getUsername(), claims);
+    String token = jwtTokenProvider.generateAccessToken(usuario.getUsername(), claims);
 
         UsuarioDTO.Basic basic = new UsuarioDTO.Basic(
                 usuario.getId(), usuario.getUsername(), usuario.getNombres(), usuario.getEmail(), usuario.getRol().name()
@@ -82,9 +82,9 @@ public class AuthServiceImpl implements AuthService {
         if (token == null || token.isBlank()) return false;
         if (refreshTokenStore.containsKey(token)) return false; // revocado
         try {
-            String username = jwtUtil.extractUsername(token);
+        String username = jwtTokenProvider.getUsername(token);
             return usuarioRepository.findByUsername(username)
-                    .filter(u -> jwtUtil.isTokenValid(token, u.getUsername()))
+            .filter(u -> jwtTokenProvider.isValid(token, u.getUsername()))
                     .isPresent();
         } catch (Exception e) {
             log.debug("Token inválido: {}", e.getMessage());
@@ -99,12 +99,12 @@ public class AuthServiceImpl implements AuthService {
         if (!validateToken(refreshToken)) {
             throw new BusinessException("Refresh token inválido");
         }
-        String username = jwtUtil.extractUsername(refreshToken);
+    String username = jwtTokenProvider.getUsername(refreshToken);
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", usuario.getRol().name());
-        String nuevo = jwtUtil.generateToken(usuario.getUsername(), claims);
+    String nuevo = jwtTokenProvider.generateAccessToken(usuario.getUsername(), claims);
         UsuarioDTO.Basic basic = new UsuarioDTO.Basic(
                 usuario.getId(), usuario.getUsername(), usuario.getNombres(), usuario.getEmail(), usuario.getRol().name()
         );
