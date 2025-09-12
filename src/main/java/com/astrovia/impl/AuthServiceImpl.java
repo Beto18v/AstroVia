@@ -5,7 +5,7 @@ import com.astrovia.dto.AuthDTO;
 import com.astrovia.dto.UsuarioDTO;
 import com.astrovia.entity.Usuario;
 import com.astrovia.exception.BusinessException;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.UsuarioRepository;
 import com.astrovia.service.AuthService;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public AuthDTO.LoginResponse login(AuthDTO.LoginRequest request) {
         Usuario usuario = usuarioRepository.findByUsername(request.username())
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         if (!Boolean.TRUE.equals(usuario.getActivo())) {
             throw new BusinessException("Usuario inactivo");
@@ -101,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
         }
     String username = jwtTokenProvider.getUsername(refreshToken);
         Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", usuario.getRol().name());
     String nuevo = jwtTokenProvider.generateAccessToken(usuario.getUsername(), claims);
