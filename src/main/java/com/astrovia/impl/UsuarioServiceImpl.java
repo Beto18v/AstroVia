@@ -4,7 +4,7 @@ import com.astrovia.dto.UsuarioDTO;
 import com.astrovia.entity.Usuario;
 import com.astrovia.enums.Rol;
 import com.astrovia.exception.BusinessException;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.UsuarioRepository;
 import com.astrovia.service.UsuarioService;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioDTO.Response findById(Long id) {
         return toResponse(usuarioRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado")));
     }
 
     /** {@inheritDoc} */
@@ -76,7 +76,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioDTO.Response findByUsername(String username) {
         return toResponse(usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado")));
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional(readOnly = true)
     public UsuarioDTO.Response findByDoc(String doc) {
         return toResponse(usuarioRepository.findByDoc(doc)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado")));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado")));
     }
 
     /** {@inheritDoc} */
@@ -113,7 +113,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public UsuarioDTO.Response update(Long id, UsuarioDTO.Request request) {
         Usuario u = usuarioRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         boolean cambiarPassword = request.password() != null && !request.password().isBlank();
         applyRequest(request, u, cambiarPassword);
         log.info("Usuario actualizado id {}", id);
@@ -125,7 +125,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public void deleteById(Long id) {
         if (!usuarioRepository.existsById(id)) {
-            throw new NotFoundException("Usuario no encontrado");
+            throw new ResourceNotFoundException("Usuario no encontrado");
         }
         usuarioRepository.deleteById(id);
         log.info("Usuario eliminado id {}", id);

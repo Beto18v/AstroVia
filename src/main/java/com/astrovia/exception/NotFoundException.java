@@ -1,8 +1,9 @@
 package com.astrovia.exception;
 
 /**
- * Excepción para recursos no encontrados en la capa de servicio.
+ * @deprecated Reemplazada por {@link ResourceNotFoundException}. Mantener sólo por compatibilidad temporal.
  */
+@Deprecated
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) { super(message); }
 }

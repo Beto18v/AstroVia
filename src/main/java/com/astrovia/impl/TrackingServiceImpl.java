@@ -4,7 +4,7 @@ import com.astrovia.dto.TrackingDTO;
 import com.astrovia.entity.Envio;
 import com.astrovia.entity.Tracking;
 import com.astrovia.entity.Usuario;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.EnvioRepository;
 import com.astrovia.repository.TrackingRepository;
 import com.astrovia.service.TrackingService;
@@ -50,7 +50,7 @@ public class TrackingServiceImpl implements TrackingService {
     @Override
     @Transactional
     public TrackingDTO.Response save(TrackingDTO.Request request) {
-        Envio envio = envioRepository.findById(request.idEnvio()).orElseThrow(() -> new NotFoundException("Envío no encontrado"));
+    Envio envio = envioRepository.findById(request.idEnvio()).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado"));
         Usuario usuario = null; // En un escenario real vendría del SecurityContext
         Tracking t = new Tracking(envio, request.ubicacion(), request.evento(), usuario, request.observaciones());
         trackingRepository.save(t);

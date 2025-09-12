@@ -10,7 +10,7 @@ import com.astrovia.entity.Tracking;
 import com.astrovia.entity.Usuario;
 import com.astrovia.enums.EstadoEnvio;
 import com.astrovia.exception.BusinessException;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.EnvioRepository;
 import com.astrovia.repository.SucursalRepository;
 import com.astrovia.repository.TrackingRepository;
@@ -69,9 +69,9 @@ public class EnvioServiceImpl implements EnvioService {
     }
 
     private void applyRequest(EnvioDTO.Request r, Envio e) {
-        Usuario cliente = usuarioRepository.findById(r.idCliente()).orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
-        Sucursal origen = sucursalRepository.findById(r.idSucursalOrigen()).orElseThrow(() -> new NotFoundException("Sucursal origen no encontrada"));
-        Sucursal destino = sucursalRepository.findById(r.idSucursalDestino()).orElseThrow(() -> new NotFoundException("Sucursal destino no encontrada"));
+    Usuario cliente = usuarioRepository.findById(r.idCliente()).orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+    Sucursal origen = sucursalRepository.findById(r.idSucursalOrigen()).orElseThrow(() -> new ResourceNotFoundException("Sucursal origen no encontrada"));
+    Sucursal destino = sucursalRepository.findById(r.idSucursalDestino()).orElseThrow(() -> new ResourceNotFoundException("Sucursal destino no encontrada"));
         e.setCliente(cliente);
         e.setSucursalOrigen(origen);
         e.setSucursalDestino(destino);
@@ -93,13 +93,13 @@ public class EnvioServiceImpl implements EnvioService {
     @Override
     @Transactional(readOnly = true)
     public EnvioDTO.Response findById(Long id) {
-        return toResponse(envioRepository.findById(id).orElseThrow(() -> new NotFoundException("Envío no encontrado")));
+    return toResponse(envioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado")));
     }
 
     @Override
     @Transactional(readOnly = true)
     public EnvioDTO.Response findByCodigo(String codigo) {
-        return toResponse(envioRepository.findByCodigo(codigo).orElseThrow(() -> new NotFoundException("Envío no encontrado")));
+    return toResponse(envioRepository.findByCodigo(codigo).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado")));
     }
 
     @Override
@@ -119,7 +119,7 @@ public class EnvioServiceImpl implements EnvioService {
     @Override
     @Transactional
     public EnvioDTO.Response update(Long id, EnvioDTO.Request request) {
-        Envio e = envioRepository.findById(id).orElseThrow(() -> new NotFoundException("Envío no encontrado"));
+    Envio e = envioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado"));
         applyRequest(request, e);
         log.info("Envío actualizado id {}", id);
         return toResponse(e);
@@ -128,7 +128,7 @@ public class EnvioServiceImpl implements EnvioService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        if (!envioRepository.existsById(id)) throw new NotFoundException("Envío no encontrado");
+    if (!envioRepository.existsById(id)) throw new ResourceNotFoundException("Envío no encontrado");
         envioRepository.deleteById(id);
         log.info("Envío eliminado id {}", id);
     }
@@ -148,7 +148,7 @@ public class EnvioServiceImpl implements EnvioService {
     @Override
     @Transactional
     public EnvioDTO.Response updateEstado(Long id, EnvioDTO.EstadoRequest request) {
-        Envio e = envioRepository.findById(id).orElseThrow(() -> new NotFoundException("Envío no encontrado"));
+    Envio e = envioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado"));
         if (request.estado() == null) throw new BusinessException("Estado requerido");
         e.setEstado(request.estado());
         Tracking t = new Tracking(e, request.estado().name(), request.observaciones());

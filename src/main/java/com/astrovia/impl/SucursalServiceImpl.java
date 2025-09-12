@@ -2,7 +2,7 @@ package com.astrovia.impl;
 
 import com.astrovia.dto.SucursalDTO;
 import com.astrovia.entity.Sucursal;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.SucursalRepository;
 import com.astrovia.service.SucursalService;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class SucursalServiceImpl implements SucursalService {
     @Override
     @Transactional(readOnly = true)
     public SucursalDTO.Response findById(Long id) {
-        return toResponse(sucursalRepository.findById(id).orElseThrow(() -> new NotFoundException("Sucursal no encontrada")));
+    return toResponse(sucursalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sucursal no encontrada")));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SucursalServiceImpl implements SucursalService {
     @Override
     @Transactional
     public SucursalDTO.Response update(Long id, SucursalDTO.Request request) {
-        Sucursal s = sucursalRepository.findById(id).orElseThrow(() -> new NotFoundException("Sucursal no encontrada"));
+    Sucursal s = sucursalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sucursal no encontrada"));
         applyRequest(request, s);
         log.info("Sucursal actualizada id {}", id);
         return toResponse(s);
@@ -73,7 +73,7 @@ public class SucursalServiceImpl implements SucursalService {
     @Transactional
     public void deleteById(Long id) {
         if (!sucursalRepository.existsById(id)) {
-            throw new NotFoundException("Sucursal no encontrada");
+            throw new ResourceNotFoundException("Sucursal no encontrada");
         }
         sucursalRepository.deleteById(id);
         log.info("Sucursal eliminada id {}", id);

@@ -3,7 +3,7 @@ package com.astrovia.impl;
 import com.astrovia.dto.PaqueteDTO;
 import com.astrovia.entity.Envio;
 import com.astrovia.entity.Paquete;
-import com.astrovia.exception.NotFoundException;
+import com.astrovia.exception.ResourceNotFoundException;
 import com.astrovia.repository.EnvioRepository;
 import com.astrovia.repository.PaqueteRepository;
 import com.astrovia.service.PaqueteService;
@@ -44,7 +44,7 @@ public class PaqueteServiceImpl implements PaqueteService {
     @Override
     @Transactional
     public PaqueteDTO.Response save(PaqueteDTO.Request request) {
-        Envio envio = envioRepository.findById(request.idEnvio()).orElseThrow(() -> new NotFoundException("Envío no encontrado"));
+    Envio envio = envioRepository.findById(request.idEnvio()).orElseThrow(() -> new ResourceNotFoundException("Envío no encontrado"));
         Paquete p = new Paquete(envio, request.descripcion(), request.valorDeclarado(), request.peso(), request.dimensiones());
         paqueteRepository.save(p);
         log.info("Paquete agregado al envío {}", envio.getCodigo());
@@ -55,7 +55,7 @@ public class PaqueteServiceImpl implements PaqueteService {
     @Transactional
     public void deleteById(Long id) {
         if (!paqueteRepository.existsById(id)) {
-            throw new NotFoundException("Paquete no encontrado");
+            throw new ResourceNotFoundException("Paquete no encontrado");
         }
         paqueteRepository.deleteById(id);
         log.info("Paquete eliminado id {}", id);
