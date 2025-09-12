@@ -217,6 +217,7 @@ QUERIES PERSONALIZADAS NECESARIAS:
 - Envíos sin tracking en las últimas 24 horas
 - Usuarios con más envíos en el último mes
 
+Crea un .md en /arquitecture-back con la informacion de los repositories
 ADJUNTO: [Entidades y DTOs creados en pasos anteriores]
 ```
 
@@ -283,10 +284,12 @@ Crear interfaces de servicio para cada entidad principal:
    - TrackingResponse getUltimoTracking(Long envioId)
 ```
 
+Crea un .md en /arquitecture-back con la informacion de los services
+
 ### 5. PROMPT - IMPLEMENTACIONES
 
 ```
-Necesito implementar las interfaces de servicio definidas en el paso anterior.
+Necesito implementar las interfaces de servicio definidas en los service.
 
 CONTEXTO:
 Tengo interfaces de servicio para Auth, Sucursal, Usuario, Envio, Paquete y Tracking.
@@ -309,6 +312,7 @@ REQUERIMIENTOS:
 - Crear clases `AuthServiceImpl`, `SucursalServiceImpl`, `UsuarioServiceImpl`, `EnvioServiceImpl`, `PaqueteServiceImpl`, `TrackingServiceImpl`
 - Documentar métodos con JavaDoc
 
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Impl
 ```
 
 ### 6. PROMPT - CONTROLLERS
@@ -341,6 +345,7 @@ CONTROLADORES A CREAR:
 5. **PaqueteController** → /api/paquetes
 6. **TrackingController** → /api/tracking
 
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Controllers
 ```
 
 ### 7. PROMPT - CONFIGURACION
@@ -380,6 +385,7 @@ REQUERIMIENTOS:
 - Usar `@Bean` donde aplique
 - Documentar métodos principales
 
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Config
 ```
 
 ### 8. PROMPT - EXCEPCIONES
@@ -412,6 +418,7 @@ REQUERIMIENTOS:
 - Uso de `@ExceptionHandler`
 - Documentar cada excepción
 
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Exceptions
 ```
 
 ### 9. PROMPT - TESTING
