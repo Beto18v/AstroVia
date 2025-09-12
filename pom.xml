@@ -30,9 +30,11 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- JWT -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-api</artifactId>
+				<version>0.11.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

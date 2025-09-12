@@ -345,7 +345,7 @@ CONTROLADORES A CREAR:
 5. **PaqueteController** → /api/paquetes
 6. **TrackingController** → /api/tracking
 
-Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los Controllers
+Crea por ultimo, un .md en /docs/arquitecture-back con la informacion de los CONTROLLERS.md
 ```
 
 ### 7. PROMPT - CONFIGURACION
