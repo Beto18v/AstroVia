@@ -28,6 +28,8 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
 
     List<Envio> findByEstado(EstadoEnvio estado);
 
+    List<Envio> findByEstadoOrderByFechaCreacionDesc(EstadoEnvio estado);
+
     List<Envio> findByFechaCreacionBetween(LocalDateTime inicio, LocalDateTime fin);
 
     long countByEstado(EstadoEnvio estado);
@@ -52,7 +54,7 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                 FROM tracking t
                 GROUP BY t.id_envio
             ) lt ON lt.id_envio = e.id
-            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < (NOW() - INTERVAL '24 HOURS'))
+            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < DATEADD('HOUR', -24, CURRENT_TIMESTAMP))
             """,
             nativeQuery = true)
     List<Envio> findEnviosSinTracking24h();
@@ -67,7 +69,7 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                 FROM tracking t
                 GROUP BY t.id_envio
             ) lt ON lt.id_envio = e.id
-            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < (NOW() - INTERVAL '24 HOURS'))
+            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < DATEADD('HOUR', -24, CURRENT_TIMESTAMP))
             """,
             countQuery = """
             SELECT COUNT(*) FROM envio e
@@ -76,7 +78,7 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                 FROM tracking t
                 GROUP BY t.id_envio
             ) lt ON lt.id_envio = e.id
-            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < (NOW() - INTERVAL '24 HOURS'))
+            WHERE (lt.last_fecha IS NULL OR lt.last_fecha < DATEADD('HOUR', -24, CURRENT_TIMESTAMP))
             """,
             nativeQuery = true)
     Page<Envio> findEnviosSinTracking24h(Pageable pageable);
@@ -108,7 +110,7 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                    COUNT(e.id) AS totalEnvios
             FROM usuario u
             JOIN envio e ON e.id_cliente = u.id
-            WHERE e.fecha_creacion >= (NOW() - INTERVAL '30 DAYS')
+            WHERE e.fecha_creacion >= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
             GROUP BY u.id, u.username, u.nombres
             ORDER BY totalEnvios DESC
             """,
@@ -123,7 +125,7 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                    COUNT(e.id) AS totalEnvios
             FROM usuario u
             JOIN envio e ON e.id_cliente = u.id
-            WHERE e.fecha_creacion >= (NOW() - INTERVAL '30 DAYS')
+            WHERE e.fecha_creacion >= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
             GROUP BY u.id, u.username, u.nombres
             ORDER BY totalEnvios DESC
             """,
@@ -132,12 +134,18 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
                 SELECT u.id
                 FROM usuario u
                 JOIN envio e ON e.id_cliente = u.id
-                WHERE e.fecha_creacion >= (NOW() - INTERVAL '30 DAYS')
+                WHERE e.fecha_creacion >= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
                 GROUP BY u.id
             ) sub
             """,
             nativeQuery = true)
     Page<UsuarioTopEnviosProjection> topUsuariosUltimoMes(Pageable pageable);
+
+    /**
+     * Obtiene estadísticas agrupadas por estado de envío.
+     */
+    @Query("SELECT e.estado as estado, COUNT(e) as cantidad FROM Envio e GROUP BY e.estado")
+    List<Object[]> countByEstadoGrouped();
 
     /** Proyección para estadísticas de sucursales */
     /**

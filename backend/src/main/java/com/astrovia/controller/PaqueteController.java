@@ -19,6 +19,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class PaqueteController {
 
+        // Controlador para gestión de paquetes dentro de un envío
     private final PaqueteService paqueteService;
 
     public PaqueteController(PaqueteService paqueteService) {
@@ -28,6 +29,7 @@ public class PaqueteController {
     @GetMapping("/envio/{envioId}")
     @Operation(summary = "Listar paquetes de un envío")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
+        // Lista los paquetes asociados a un envío
     public ResponseEntity<ApiResponse<List<PaqueteDTO.Response>>> findByEnvio(@PathVariable Long envioId) {
         return ResponseEntity.ok(ApiResponse.ok("Paquetes del envío", paqueteService.findByEnvioId(envioId)));
     }
@@ -35,6 +37,7 @@ public class PaqueteController {
     @PostMapping
     @Operation(summary = "Crear paquete")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
+        // Crea un nuevo paquete
     public ResponseEntity<ApiResponse<PaqueteDTO.Response>> create(@Valid @RequestBody PaqueteDTO.Request request) {
         return ResponseEntity.ok(ApiResponse.ok("Paquete creado", paqueteService.save(request)));
     }
@@ -42,6 +45,7 @@ public class PaqueteController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar paquete")
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
+        // Elimina un paquete por su ID
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         paqueteService.deleteById(id);
         return ResponseEntity.ok(ApiResponse.ok("Paquete eliminado"));

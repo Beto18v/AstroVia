@@ -20,6 +20,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByUsername(String username);
 
+    Optional<Usuario> findByEmail(String email);
+
+    /**
+     * Busca un usuario por username o email.
+     */
+    @Query("SELECT u FROM Usuario u WHERE u.username = :usernameOrEmail OR u.email = :usernameOrEmail")
+    Optional<Usuario> findByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
+
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
@@ -39,9 +47,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByRol(Rol rol);
 
     /**
+     * Lista usuarios por rol específico ordenados por fecha de creación descendente.
+     */
+    List<Usuario> findByRolOrderByFechaCreacionDesc(Rol rol);
+
+    /**
      * Obtiene todos los usuarios activos.
      */
     List<Usuario> findByActivoTrue();
+
+    /**
+     * Obtiene todos los usuarios por estado activo ordenados por fecha de creación descendente.
+     */
+    List<Usuario> findByActivoOrderByFechaCreacionDesc(Boolean activo);
 
     /**
      * Lista usuarios activos filtrando por rol.

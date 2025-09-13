@@ -2,6 +2,7 @@ package com.astrovia.entity;
 
 import com.astrovia.enums.Rol;
 import jakarta.persistence.*;
+    // Entidad que representa un usuario del sistema (clientes, operadores y administradores)
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

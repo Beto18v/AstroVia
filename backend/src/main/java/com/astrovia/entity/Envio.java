@@ -17,6 +17,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "envio")
+    // Entidad que representa un envío en el sistema logístico
 public class Envio {
 
     @Id

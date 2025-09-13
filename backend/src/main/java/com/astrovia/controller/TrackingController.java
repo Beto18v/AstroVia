@@ -19,6 +19,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class TrackingController {
 
+        // Controlador para gestión de eventos de tracking de envíos
     private final TrackingService trackingService;
 
     public TrackingController(TrackingService trackingService) {
@@ -27,6 +28,7 @@ public class TrackingController {
 
     @GetMapping("/envio/{envioId}")
     @Operation(summary = "Listar tracking de un envío")
+        // Lista todos los eventos de tracking de un envío
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<List<TrackingDTO.Response>>> findByEnvio(@PathVariable Long envioId) {
         return ResponseEntity.ok(ApiResponse.ok("Tracking del envío", trackingService.findByEnvioId(envioId)));
@@ -34,6 +36,7 @@ public class TrackingController {
 
     @GetMapping("/envio/{envioId}/ultimo")
     @Operation(summary = "Obtener último evento de tracking de un envío")
+        // Obtiene el último evento de tracking de un envío
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<TrackingDTO.Response>> ultimo(@PathVariable Long envioId) {
         return ResponseEntity.ok(ApiResponse.ok("Último tracking", trackingService.getUltimoTracking(envioId)));
@@ -41,6 +44,7 @@ public class TrackingController {
 
     @PostMapping
     @Operation(summary = "Registrar nuevo evento de tracking")
+        // Registra un nuevo evento de tracking
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<TrackingDTO.Response>> create(@Valid @RequestBody TrackingDTO.Request request) {
         return ResponseEntity.ok(ApiResponse.ok("Tracking registrado", trackingService.save(request)));

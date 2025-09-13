@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "paquete")
 public class Paquete {
+    // Entidad que representa un paquete dentro de un envío
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Entidad que representa una sucursal del sistema logístico
  */
+    // Entidad que representa una sucursal del sistema logístico
 @Entity
 @Table(name = "sucursal")
 public class Sucursal {

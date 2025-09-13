@@ -452,6 +452,10 @@ REQUERIMIENTOS:
 - Generar datos de prueba con `@BeforeEach`
 - Validar casos de error en servicios y controladores
 
+Finalmente, deja en el documento TESTING.md en /docs con toda la informacion de los test como
+principiante en ellos, quiero un doc con todo de porque debe hacerse asi, como
+funcionan, porque funcionan, etc.
+Necesito todo el backend listo y funcional.
 ```
 
 ### 10. PROMPT - FRONTEND

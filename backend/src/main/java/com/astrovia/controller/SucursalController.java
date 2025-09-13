@@ -19,6 +19,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 public class SucursalController {
 
+        // Controlador para gestión de sucursales (listar, crear, actualizar, eliminar)
     private final SucursalService sucursalService;
 
     public SucursalController(SucursalService sucursalService) {
@@ -27,6 +28,7 @@ public class SucursalController {
 
     @GetMapping
     @Operation(summary = "Listar todas las sucursales")
+        // Lista todas las sucursales
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<List<SucursalDTO.Response>>> findAll() {
         return ResponseEntity.ok(ApiResponse.ok("Listado de sucursales", sucursalService.findAll()));
@@ -34,6 +36,7 @@ public class SucursalController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener sucursal por id")
+        // Busca una sucursal por su ID
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<SucursalDTO.Response>> findById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok("Sucursal encontrada", sucursalService.findById(id)));
@@ -41,6 +44,7 @@ public class SucursalController {
 
     @GetMapping("/ciudad/{ciudad}")
     @Operation(summary = "Buscar sucursales por ciudad")
+        // Busca sucursales por ciudad
     @PreAuthorize("hasAnyRole('ADMIN','OPERADOR')")
     public ResponseEntity<ApiResponse<List<SucursalDTO.Response>>> findByCiudad(@PathVariable String ciudad) {
         return ResponseEntity.ok(ApiResponse.ok("Sucursales por ciudad", sucursalService.findByCiudad(ciudad)));
@@ -48,6 +52,7 @@ public class SucursalController {
 
     @PostMapping
     @Operation(summary = "Crear sucursal")
+        // Crea una nueva sucursal
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SucursalDTO.Response>> create(@Valid @RequestBody SucursalDTO.Request request) {
         return ResponseEntity.ok(ApiResponse.ok("Sucursal creada", sucursalService.save(request)));
@@ -55,6 +60,7 @@ public class SucursalController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar sucursal")
+        // Actualiza los datos de una sucursal
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<SucursalDTO.Response>> update(@PathVariable Long id, @Valid @RequestBody SucursalDTO.Request request) {
         return ResponseEntity.ok(ApiResponse.ok("Sucursal actualizada", sucursalService.update(id, request)));
@@ -62,6 +68,7 @@ public class SucursalController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar sucursal")
+        // Elimina una sucursal por su ID
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         sucursalService.deleteById(id);
