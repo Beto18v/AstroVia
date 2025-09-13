@@ -461,60 +461,76 @@ Necesito todo el backend listo y funcional.
 ### 10. PROMPT - FRONTEND
 
 ```
-Necesito crear el frontend del sistema de logística usando React 18+, Vite y TypeScript.
+# Frontend del Sistema de Logística (HTML + CSS + Thymeleaf)
 
-CONTEXTO:
-El backend ya está listo con endpoints REST y seguridad JWT.
-El frontend debe ser moderno, elegante y relacionado al mundo de envíos/logística.
+## CONTEXTO
 
-DISEÑO:
+- El backend ya está listo con endpoints REST y seguridad JWT.
+- El frontend debe ser **moderno, elegante y relacionado al mundo de envíos/logística**, pero se construirá con **Thymeleaf** y archivos estáticos en `resources/static` (CSS, JS, imágenes).
+
+---
+
+## DISEÑO
+
 - Tema visual inspirado en logística moderna:
-  - Colores elegantes: Azul oscuro (#1E3A8A), gris neutro (#374151), acentos en verde (#10B981) y naranja (#F97316).
-  - Tipografía: "Inter" para legibilidad.
+  - Colores elegantes: Azul oscuro `#1E3A8A`, gris neutro `#374151`, acentos en verde `#10B981` y naranja `#F97316`.
+  - Tipografía: **Inter** para legibilidad.
   - Estilo: Minimalista, con tarjetas, tablas limpias y gráficos.
-- Componentes clave:
-  - Dashboard con métricas de envíos (cards y gráficos).
-  - Gestión de sucursales, usuarios, envíos y tracking.
-  - Página pública de tracking con código de envío.
+
+- Vistas clave:
+  - **Dashboard** con métricas de envíos (cards + tablas simples).
+  - **Gestión de sucursales, usuarios, envíos y tracking** (CRUD con formularios).
+  - **Página pública de tracking** por código de envío.
+
 - Layout:
-  - Sidebar con navegación
-  - Header con logo y usuario
-  - Footer discreto
-- UI:
-  - Uso de Tailwind CSS + shadcn/ui
-  - Iconos con lucide-react
-  - Feedback visual con react-hot-toast
+  - Sidebar con navegación.
+  - Header con logo y usuario.
+  - Footer discreto.
 
-ESPECIFICACIONES:
-- Autenticación:
-  - Página de Login
-  - Contexto global de Auth
-  - Guardado de tokens JWT en localStorage
-- Rutas protegidas según rol:
-  - ADMIN: acceso completo
-  - OPERADOR: sucursales, usuarios, envíos, tracking
-  - CLIENTE: solo sus envíos
-- Funcionalidades:
-  - CRUD sucursales, usuarios, envíos, paquetes
-  - Tracking con timeline visual
-  - Dashboard con estadísticas (gráficos con recharts)
-- Arquitectura:
-  - src/
-    - components/ (UI reusables: forms, tables, modals)
-    - pages/ (Dashboard, Sucursales, Usuarios, Envios, Tracking, Login)
-    - hooks/ (useAuth, useApi)
-    - context/ (AuthContext)
-    - services/ (axios client)
-    - router/ (configuración de rutas)
-  - Configurar proxy hacia backend en vite.config.ts
+---
 
-REQUERIMIENTOS:
-- Manejar formularios con react-hook-form + yup
-- Llamadas HTTP con axios
-- Manejo de cache con react-query
-- Validaciones en frontend y backend
-- Testing con Vitest y React Testing Library
-- Documentar componentes principales
+## ESPECIFICACIONES
+
+- **Autenticación:**
+  - Página de Login.
+  - Manejo de sesión y JWT desde backend.
+
+- **Rutas protegidas según rol (gestionado desde backend con Spring Security):**
+  - ADMIN: acceso completo.
+  - OPERADOR: sucursales, usuarios, envíos, tracking.
+  - CLIENTE: solo sus envíos.
+
+- **Funcionalidades:**
+  - Formularios para CRUD de sucursales, usuarios, envíos y paquetes.
+  - Página de tracking con timeline visual del estado de envío.
+  - Dashboard con estadísticas básicas (renderizadas desde datos del backend).
+
+---
+
+## ARQUITECTURA FRONTEND EN SPRING BOOT
+src/main/resources/
+├── static/
+│ ├── css/
+│ │ └── styles.css # estilos globales
+│ ├── js/
+│ │ └── app.js # scripts opcionales
+│ └── img/ # logos e íconos
+└── templates/
+├── layout.html # layout base con header, sidebar, footer
+├── login.html # login de usuarios
+├── dashboard.html # métricas generales
+├── sucursales.html # gestión de sucursales
+├── usuarios.html # gestión de usuarios
+├── envios.html # gestión de envíos
+└── tracking.html # tracking público de envíos
+
+## REQUERIMIENTOS
+
+- Formularios validados con Thymeleaf + Bean Validation (JSR 380).
+- Uso de fragmentos Thymeleaf (`th:fragment`) para reutilizar **header, sidebar y footer**.
+- Manejo de roles y autenticación con **Spring Security** + JWT.
+- CSS moderno con tu paleta de colores definida.
+- Documentar cada vista y fragmento para mantenimiento.
 
 ```
 
