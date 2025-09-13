@@ -532,6 +532,7 @@ src/main/resources/
 - CSS moderno con tu paleta de colores definida.
 - Documentar cada vista y fragmento para mantenimiento.
 
+Que todo este conectado con el back
 ```
 
 ### 11. PROMPT - DEPLOYMENT Y CI/CD
